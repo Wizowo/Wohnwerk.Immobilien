@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WOHNWERK – Hausverwaltung</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #D4B483;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #222222;
+    --dark4: #2A2A2A;
+    --cream: #F2EFE8;
+    --cream2: #EAE6DC;
+    --white: #FFFFFF;
+    --gray: #888888;
+    --text-light: #CCCCCC;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ─── TICKER ─── */
+  .ticker {
+    background: var(--dark3);
+    border-bottom: 1px solid #333;
+    overflow: hidden;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker 20s linear infinite;
+  }
+  .ticker span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    padding: 0 28px;
+  }
+  .ticker span::before {
+    content: '◆';
+    color: var(--gold);
+    margin-right: 12px;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #222;
+  }
+  .logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--gold); }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .btn-anfragen {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-anfragen:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--dark);
+    padding: 80px 60px 90px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: center;
+    min-height: 80vh;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* Geometric background shapes */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-bg svg { width: 100%; height: 100%; opacity: 0.07; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #222;
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 28px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .hero h1 .gold { color: var(--gold); }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-light);
+    line-height: 1.65;
+    max-width: 460px;
+    margin-bottom: 40px;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid #444;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-secondary:hover { border-color: #666; }
+
+  /* Stats cards */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--dark3);
+    border: 1px solid #2E2E2E;
+    border-radius: 8px;
+    padding: 24px 20px;
+  }
+  .stat-card.wide { grid-column: 1 / -1; }
+  .stat-num {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+  .stat-desc {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+
+  /* ─── LEISTUNGEN ─── */
+  .leistungen {
+    background: var(--cream);
+    color: var(--dark);
+    padding: 80px 60px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .section-eyebrow.dark { color: #888; }
+  .leistungen h2 {
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+  .leistungen-sub {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 52px;
+  }
+  .leistungen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #D5D0C5;
+    border: 1px solid #D5D0C5;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .leistung-card {
+    background: var(--cream);
+    padding: 36px 32px;
+    transition: background 0.2s;
+  }
+  .leistung-card:hover { background: #ECEAE1; }
+  .leistung-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .leistung-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .leistung-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ─── ÜBER UNS ─── */
+  .ueber {
+    background: var(--dark);
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 80px;
+    align-items: center;
+  }
+  .ueber h2 {
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .ueber-sub {
+    font-size: 15px;
+    color: var(--text-light);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 500px;
+  }
+  .check-list { list-style: none; }
+  .check-list li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .check-list li::before {
+    content: '✓';
+    background: var(--gold);
+    color: var(--dark);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-list li div strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .check-list li div span {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+  .ueber-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .ueber-stat {
+    background: var(--dark3);
+    border: 1px solid #2E2E2E;
+    border-radius: 8px;
+    padding: 28px 22px;
+    text-align: center;
+  }
+  .ueber-stat .num {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+  .ueber-stat .lbl {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 4px;
+  }
+
+  /* ─── REGION ─── */
+  .region {
+    background: var(--cream);
+    color: var(--dark);
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .region h2 {
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    color: var(--dark);
+  }
+  .region-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+  .region-tag {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 100px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .region-tag:hover { background: #333; }
+  .region-tag.active {
+    background: var(--gold);
+    color: var(--dark);
+  }
+  .region-text {
+    padding-top: 60px;
+  }
+  .region-text p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  /* ─── KONTAKT ─── */
+  .kontakt {
+    background: var(--cream2);
+    padding: 80px 60px;
+    color: var(--dark);
+  }
+  .kontakt h2 {
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 48px;
+    color: var(--dark);
+  }
+  .kontakt-inner {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .kontakt-info h4 {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 8px;
+  }
+  .standort-box {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .standort-box .pin {
+    background: #333;
+    border-radius: 6px;
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .standort-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-light);
+  }
+  .kontakt-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .kontakt-form input,
+  .kontakt-form textarea,
+  .kontakt-form select {
+    background: var(--white);
+    border: 1.5px solid #D5D0C5;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .kontakt-form input:focus,
+  .kontakt-form textarea:focus { border-color: var(--gold); }
+  .kontakt-form textarea { grid-column: 1 / -1; resize: vertical; min-height: 120px; }
+  .kontakt-form input::placeholder,
+  .kontakt-form textarea::placeholder { color: #AAA; }
+  .kontakt-form .full { grid-column: 1 / -1; }
+  .btn-submit {
+    background: var(--dark);
+    color: var(--white);
+    border: none;
+    padding: 15px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+  }
+  .btn-submit:hover { background: #333; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid #222;
+    padding: 32px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer .logo { font-size: 18px; }
+  footer p { font-size: 13px; color: #555; }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero { grid-template-columns: 1fr; padding: 50px 24px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .leistungen { padding: 60px 24px; }
+    .leistungen-grid { grid-template-columns: 1fr; }
+    .ueber { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .region { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .kontakt { padding: 60px 24px; }
+    .kontakt-inner { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; padding: 24px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <span>Mietverwaltung</span>
+    <span>WEG-Verwaltung</span>
+    <span>Rems-Murr-Kreis</span>
+    <span>Zuverlässig</span>
+    <span>IHK-Geprüft</span>
+    <span>Hausverwaltung Backnang</span>
+    <span>Mietverwaltung</span>
+    <span>WEG-Verwaltung</span>
+    <span>Rems-Murr-Kreis</span>
+    <span>Zuverlässig</span>
+    <span>IHK-Geprüft</span>
+    <span>Hausverwaltung Backnang</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">WOHN<span>WERK</span></a>
+  <ul class="nav-links">
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#ueber">Über uns</a></li>
+    <li><a href="#region">Region</a></li>
+    <li><a href="#kontakt" class="btn-anfragen">Anfragen</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <svg viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="700,50 1050,350 700,650 350,350" fill="none" stroke="#C9A96E" stroke-width="1"/>
+      <polygon points="700,150 950,350 700,550 450,350" fill="none" stroke="#C9A96E" stroke-width="0.5"/>
+      <polygon points="700,250 850,350 700,450 550,350" fill="none" stroke="#C9A96E" stroke-width="0.5"/>
+    </svg>
+  </div>
+  <div class="hero-left">
+    <div class="hero-tag">Backnang · Rems-Murr-Kreis</div>
+    <h1>Immobilien,<br><span class="gold">die laufen.</span></h1>
+    <p class="hero-sub">WOHNWERK übernimmt die komplette Verwaltung Ihrer Miet- und Eigentumsobjekte – professionell, transparent und immer erreichbar.</p>
+    <div class="hero-buttons">
+      <a href="#kontakt" class="btn-primary">Kostenlos anfragen</a>
+      <a href="#leistungen" class="btn-secondary">Was wir machen →</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card wide">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Transparenz</div>
+      <div class="stat-desc">Online-Zugang zu allen Dokumenten, Abrechnungen und Protokollen.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Notfallkontakt</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">&lt;1 Tag</div>
+      <div class="stat-label">Antwortzeit</div>
+    </div>
+    <div class="stat-card wide">
+      <div class="stat-num">§34C</div>
+      <div class="stat-label">GewO Zertifiziert</div>
+      <div class="stat-desc">Vollständig lizenziert, versichert und laufend weitergebildet.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LEISTUNGEN -->
+<section class="leistungen" id="leistungen">
+  <div class="section-eyebrow dark">Was wir für Sie tun</div>
+  <h2>Alles aus einer Hand.</h2>
+  <p class="leistungen-sub">Von der Nebenkostenabrechnung bis zur Handwerkerkoordination – WOHNWERK übernimmt alle Verwaltungsaufgaben rund um Ihre Immobilie.</p>
+  <div class="leistungen-grid">
+    <div class="leistung-card">
+      <span class="leistung-icon">🏠</span>
+      <h3>Mietverwaltung</h3>
+      <p>Mietverträge, Mieterkorrespondenz, Mahnwesen und Übergaben – vollständig und rechtssicher.</p>
+    </div>
+    <div class="leistung-card">
+      <span class="leistung-icon">🏛️</span>
+      <h3>WEG-Verwaltung</h3>
+      <p>Eigentümerversammlungen, Beschlussprotokolle und Durchsetzung von Gemeinschaftsbeschlüssen.</p>
+    </div>
+    <div class="leistung-card">
+      <span class="leistung-icon">📊</span>
+      <h3>Betriebskostenabrechnung</h3>
+      <p>Präzise, fristgerechte Jahresabrechnungen für Mieter und Eigentümer.</p>
+    </div>
+    <div class="leistung-card">
+      <span class="leistung-icon">🔧</span>
+      <h3>Instandhaltung</h3>
+      <p>Handwerkerauswahl, Angebotsvergleich, Auftragserteilung und Qualitätskontrolle.</p>
+    </div>
+    <div class="leistung-card">
+      <span class="leistung-icon">📋</span>
+      <h3>Mietrecht &amp; Recht</h3>
+      <p>Rechtssichere Korrespondenz, Abmahnungen, Kündigungen und Mieterauswahl nach Bonitätsprüfung.</p>
+    </div>
+    <div class="leistung-card">
+      <span class="leistung-icon">💻</span>
+      <h3>Digitales Eigentümerportal</h3>
+      <p>Jederzeit Einsicht in Abrechnungen, Verträge und Protokolle – sicher und online.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ÜBER UNS -->
+<section class="ueber" id="ueber">
+  <div>
+    <div class="section-eyebrow">Über WOHNWERK</div>
+    <h2>Lokal verankert.<br>Professionell aufgestellt.</h2>
+    <p class="ueber-sub">Wir kennen den Rems-Murr-Kreis, seine Eigentümer und seine Handwerker. Kurze Wege statt anonymer Hotlines.</p>
+    <ul class="check-list">
+      <li>
+        <div>
+          <strong>IHK-geprüfte Ausbildung</strong>
+          <span>Immobilienfachwirt-Ausbildung (ILS) + IHK-Prüfung.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Vollständig versichert</strong>
+          <span>Vermögensschadenhaftpflicht mit gesetzlich vorgeschriebener Deckungssumme ab 500.000 €.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Persönlicher Ansprechpartner</strong>
+          <span>Kein Callcenter – direkter Kontakt, schnelle Reaktion.</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <strong>Regelmäßige Weiterbildung</strong>
+          <span>Gesetzlich vorgeschrieben: 20 Stunden alle 3 Jahre – wir halten uns stets aktuell.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="ueber-stats">
+    <div class="ueber-stat">
+      <div class="num">§34C</div>
+      <div class="lbl">Lizenziert</div>
+    </div>
+    <div class="ueber-stat">
+      <div class="num">500k+</div>
+      <div class="lbl">Haftpflicht-Deckung</div>
+    </div>
+    <div class="ueber-stat">
+      <div class="num">2025</div>
+      <div class="lbl">Gegründet</div>
+    </div>
+    <div class="ueber-stat">
+      <div class="num">100%</div>
+      <div class="lbl">Lokal im RMK</div>
+    </div>
+  </div>
+</section>
+
+<!-- REGION -->
+<section class="region" id="region">
+  <div>
+    <div class="section-eyebrow dark">Unser Einzugsgebiet</div>
+    <h2>Zu Hause im<br>Rems-Murr-Kreis.</h2>
+    <div class="region-tags">
+      <span class="region-tag active">Backnang</span>
+      <span class="region-tag">Murrhardt</span>
+      <span class="region-tag">Sulzbach/Murr</span>
+      <span class="region-tag">Oppenweiler</span>
+      <span class="region-tag">Burgstetten</span>
+      <span class="region-tag">Kirchberg/Murr</span>
+      <span class="region-tag">Aspach</span>
+      <span class="region-tag">Auenwald</span>
+      <span class="region-tag">Althütte</span>
+      <span class="region-tag">Großerlach</span>
+      <span class="region-tag">Weissach i.T.</span>
+      <span class="region-tag">Winnenden</span>
+      <span class="region-tag">Waiblingen</span>
+      <span class="region-tag">Schorndorf</span>
+    </div>
+  </div>
+  <div class="region-text">
+    <p>Wir sind vor Ort – nicht irgendwo in einer fernen Zentrale. Kurze Anfahrtswege bedeuten schnellere Reaktion, persönlichere Betreuung und ein echtes Verständnis für die lokalen Gegebenheiten.</p>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="kontakt" id="kontakt">
+  <div class="section-eyebrow dark">Kontakt</div>
+  <h2>Bereit, wenn Sie es sind.</h2>
+  <div class="kontakt-inner">
+    <div class="kontakt-info">
+      <h4>Standort</h4>
+      <div class="standort-box">
+        <div class="pin">📍</div>
+        <p>Backnang, 71522<br>Rems-Murr-Kreis, BW</p>
+      </div>
+    </div>
+    <div class="kontakt-form">
+      <input type="text" placeholder="Ihr Name *">
+      <input type="email" placeholder="E-Mail *">
+      <input type="tel" placeholder="Telefon (optional)" class="full">
+      <textarea placeholder="Ihre Nachricht – Adresse des Objekts, Art der Verwaltung, Anzahl der Einheiten …"></textarea>
+      <button class="btn-submit full">Nachricht senden</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">WOHN<span>WERK</span></a>
+  <p>© 2025 WOHNWERK Hausverwaltung · Backnang · Rems-Murr-Kreis</p>
+  <p>Impressum · Datenschutz</p>
+</footer>
+
+<script>
+  // Region tag active toggle
+  document.querySelectorAll('.region-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      document.querySelectorAll('.region-tag').forEach(t => t.classList.remove('active'));
+      tag.classList.add('active');
+    });
+  });
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
